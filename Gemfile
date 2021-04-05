@@ -26,7 +26,7 @@ group :development, :test do
 end
 
 group :test do
+  gem 'guard-rspec', '~> 4.7.3', require: false
   gem 'rspec', '~> 3.10'
   gem 'rspec-its', '~> 1.3'
-  gem 'guard-rspec', '~> 4.7.3', require: false
 end
