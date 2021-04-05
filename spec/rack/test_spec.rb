@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Rack::Test::Session do
   describe 'initialization' do
     it 'supports being initialized with a Rack::MockSession app' do
-      session = Rack::Test::Session.new(Rack::MockSession.new(app))
+      session = described_class.new(Rack::MockSession.new(app))
       expect(session.request('/')).to be_ok
     end
 
     it 'supports being initialized with an app' do
-      session = Rack::Test::Session.new(app)
+      session = described_class.new(app)
       expect(session.request('/')).to be_ok
     end
   end
@@ -152,7 +154,7 @@ describe Rack::Test::Session do
         Rack::Response.new('', 200, {})
       end
 
-      session = Rack::Test::Session.new(Rack::MockSession.new(app))
+      session = described_class.new(Rack::MockSession.new(app))
       expect(session.request('/')).to be_ok
     end
 
@@ -164,6 +166,7 @@ describe Rack::Test::Session do
 
         def each
           return if @closed
+
           yield 'Hello, World!'
         end
 
@@ -180,7 +183,7 @@ describe Rack::Test::Session do
           [200, { 'Content-Type' => 'text/html', 'Content-Length' => '13' }, body]
         end
 
-        session = Rack::Test::Session.new(Rack::MockSession.new(app))
+        session = described_class.new(Rack::MockSession.new(app))
         session.request('/')
       end
 
@@ -189,7 +192,7 @@ describe Rack::Test::Session do
           [200, { 'Content-Type' => 'text/html', 'Content-Length' => '13' }, CloseableBody.new]
         end
 
-        session = Rack::Test::Session.new(Rack::MockSession.new(app))
+        session = described_class.new(Rack::MockSession.new(app))
         session.request('/')
         expect(session.last_response.body).to eq('Hello, World!')
       end
@@ -382,7 +385,7 @@ describe Rack::Test::Session do
     end
 
     let(:digest_session) do
-      session = Rack::Test::Session.new(Rack::MockSession.new(digest_app))
+      session = described_class.new(Rack::MockSession.new(digest_app))
       session.digest_authorize('test-name', 'test-password')
       session
     end
@@ -623,7 +626,7 @@ describe Rack::Test::Session do
   end
 
   describe '#get' do
-    it_should_behave_like 'any #verb methods', :get
+    it_behaves_like 'any #verb methods', :get
 
     context 'when params are not provided' do
       # This is not actually explicitly stated in the relevant RFCs;
@@ -689,11 +692,11 @@ describe Rack::Test::Session do
   end
 
   describe '#head' do
-    it_should_behave_like 'any #verb methods', :head
+    it_behaves_like 'any #verb methods', :head
   end
 
   describe '#post' do
-    it_should_behave_like 'any #verb methods', :post
+    it_behaves_like 'any #verb methods', :post
 
     it 'uses the provided params hash' do
       post '/', foo: 'bar'
@@ -731,7 +734,7 @@ describe Rack::Test::Session do
   end
 
   describe '#put' do
-    it_should_behave_like 'any #verb methods', :put
+    it_behaves_like 'any #verb methods', :put
 
     it 'accepts a body' do
       put '/', 'Lobsterlicious!'
@@ -740,7 +743,7 @@ describe Rack::Test::Session do
   end
 
   describe '#patch' do
-    it_should_behave_like 'any #verb methods', :patch
+    it_behaves_like 'any #verb methods', :patch
 
     it 'accepts a body' do
       patch '/', 'Lobsterlicious!'
@@ -749,7 +752,7 @@ describe Rack::Test::Session do
   end
 
   describe '#delete' do
-    it_should_behave_like 'any #verb methods', :delete
+    it_behaves_like 'any #verb methods', :delete
 
     it 'uses the provided params hash' do
       delete '/', foo: 'bar'
@@ -773,7 +776,7 @@ describe Rack::Test::Session do
   end
 
   describe '#options' do
-    it_should_behave_like 'any #verb methods', :options
+    it_behaves_like 'any #verb methods', :options
   end
 
   describe '#custom_request' do

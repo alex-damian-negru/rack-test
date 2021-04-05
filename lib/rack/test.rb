@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'uri'
 require 'rack'
 require 'rack/mock_session'
@@ -10,8 +12,8 @@ require 'rack/test/version'
 
 module Rack
   module Test
-    DEFAULT_HOST = 'example.org'.freeze
-    MULTIPART_BOUNDARY = '----------XnJLe9ZIbbGUYtzPQJ16u1'.freeze
+    DEFAULT_HOST = 'example.org'
+    MULTIPART_BOUNDARY = '----------XnJLe9ZIbbGUYtzPQJ16u1'
 
     # The common base class for exceptions raised by Rack::Test
     class Error < StandardError; end
@@ -39,10 +41,10 @@ module Rack
         @digest_password = nil
 
         @rack_mock_session = if mock_session.is_a?(MockSession)
-          mock_session
-        else
-          MockSession.new(mock_session)
-        end
+                               mock_session
+                             else
+                               MockSession.new(mock_session)
+                             end
 
         @default_host = @rack_mock_session.default_host
       end
@@ -185,9 +187,8 @@ module Rack
       # on the new request) in the last response. If the last response was not
       # a redirect, an error will be raised.
       def follow_redirect!
-        unless last_response.redirect?
-          raise Error, 'Last response was not a redirect. Cannot follow_redirect!'
-        end
+        raise Error, 'Last response was not a redirect. Cannot follow_redirect!' unless last_response.redirect?
+
         request_method, params =
           if last_response.status == 307
             [last_request.request_method.downcase.to_sym, last_request.params]
@@ -230,7 +231,7 @@ module Rack
         # Stringifying and upcasing methods has be commit upstream
         env['REQUEST_METHOD'] ||= env[:method] ? env[:method].to_s.upcase : 'GET'
 
-        params = env.delete(:params) do {} end
+        params = env.delete(:params) { {} }
 
         if env['REQUEST_METHOD'] == 'GET'
           # merge :params with the query string
@@ -291,10 +292,10 @@ module Rack
         params = Rack::Auth::Digest::Params.parse(challenge)
 
         params.merge!('username' => @digest_username,
-                      'nc'        => '00000001',
-                      'cnonce'    => 'nonsensenonce',
-                      'uri'       => last_request.fullpath,
-                      'method'    => last_request.env['REQUEST_METHOD'])
+                      'nc' => '00000001',
+                      'cnonce' => 'nonsensenonce',
+                      'uri' => last_request.fullpath,
+                      'method' => last_request.env['REQUEST_METHOD'])
 
         params['response'] = MockDigestRequest.new(params).response(@digest_password)
 
@@ -320,7 +321,7 @@ module Rack
 
         @headers.each do |name, value|
           env_key = name.upcase.tr('-', '_')
-          env_key = 'HTTP_' + env_key unless env_key == 'CONTENT_TYPE'
+          env_key = "HTTP_#{env_key}" unless env_key == 'CONTENT_TYPE'
           converted_headers[env_key] = value
         end
 

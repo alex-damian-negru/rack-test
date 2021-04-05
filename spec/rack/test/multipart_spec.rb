@@ -1,14 +1,14 @@
-# encoding: UTF-8
+# frozen_string_literal: true
 
 require 'spec_helper'
 
 describe Rack::Test::Session do
   def test_file_path
-    File.dirname(__FILE__) + '/../../fixtures/foo.txt'
+    "#{File.dirname(__FILE__)}/../../fixtures/foo.txt"
   end
 
   def second_test_file_path
-    File.dirname(__FILE__) + '/../../fixtures/bar.txt'
+    "#{File.dirname(__FILE__)}/../../fixtures/bar.txt"
   end
 
   def uploaded_file
@@ -60,10 +60,10 @@ describe Rack::Test::Session do
       expect(last_request.POST['foo']).to eq('bar')
 
       expected_value = if Rack::Test.encoding_aware_strings?
-        '☃'
-      else
-        "\xE2\x98\x83"
-      end
+                         '☃'
+                       else
+                         "\xE2\x98\x83"
+                       end
 
       expect(last_request.POST['utf8']).to eq(expected_value)
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GemHelpers
   def read_gemspec
     @read_gemspec ||= eval(File.read('rack-test.gemspec'))

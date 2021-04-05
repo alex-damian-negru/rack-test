@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Rack::Test::CookieJar do
-  subject(:jar) { Rack::Test::CookieJar.new }
+  subject(:jar) { described_class.new }
 
   describe '#get_cookie' do
     context 'with a populated jar' do

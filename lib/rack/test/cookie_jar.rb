@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'uri'
 require 'time'
 
@@ -21,7 +23,7 @@ module Rack
         @options = parse_query(options, ';')
 
         @options['domain']  ||= (uri.host || default_host)
-        @options['path']    ||= uri.path.sub(/\/[^\/]*\Z/, '')
+        @options['path']    ||= uri.path.sub(%r{/[^/]*\Z}, '')
       end
 
       def replaces?(other)
@@ -72,9 +74,9 @@ module Rack
 
         uri.host = @default_host if uri.host.nil?
 
-        real_domain = domain =~ /^\./ ? domain[1..-1] : domain
+        real_domain = /^\./.match?(domain) ? domain[1..] : domain
         (!secure? || (secure? && uri.scheme == 'https')) &&
-          uri.host =~ Regexp.new("#{domain =~ /^\./ ? '' : '^'}#{Regexp.escape(real_domain)}$", Regexp::IGNORECASE) &&
+          uri.host =~ Regexp.new("#{/^\./.match?(domain) ? '' : '^'}#{Regexp.escape(real_domain)}$", Regexp::IGNORECASE) &&
           uri.path =~ Regexp.new("^#{Regexp.escape(path)}")
       end
 
@@ -91,9 +93,9 @@ module Rack
 
       def to_h
         @options.merge(
-          'value'    => @value,
+          'value' => @value,
           'HttpOnly' => http_only?,
-          'secure'   => secure?
+          'secure' => secure?
         )
       end
       alias to_hash to_h
@@ -101,12 +103,12 @@ module Rack
       protected
 
       def default_uri
-        URI.parse('//' + @default_host + '/')
+        URI.parse("//#{@default_host}/")
       end
     end
 
     class CookieJar # :nodoc:
-      DELIMITER = '; '.freeze
+      DELIMITER = '; '
 
       # :api: private
       def initialize(cookies = [], default_host = DEFAULT_HOST)
@@ -118,7 +120,7 @@ module Rack
       def [](name)
         cookies = hash_for(nil)
         # TODO: Should be case insensitive
-        cookies[name.to_s] && cookies[name.to_s].value
+        cookies[name.to_s]&.value
       end
 
       def []=(name, value)

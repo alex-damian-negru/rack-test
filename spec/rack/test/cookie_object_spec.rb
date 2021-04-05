@@ -1,25 +1,27 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Rack::Test::Cookie do
-  subject(:cookie) { Rack::Test::Cookie.new(cookie_string) }
+  subject(:cookie) { described_class.new(cookie_string) }
 
   let(:cookie_string) { raw_cookie_string }
 
   let(:raw_cookie_string) do
     [
-      'cookie_name=' + CGI.escape(value),
-      'domain=' + domain,
-      'path=' + path,
-      'expires=' + expires
+      "cookie_name=#{CGI.escape(value)}",
+      "domain=#{domain}",
+      "path=#{path}",
+      "expires=#{expires}"
     ].join(Rack::Test::CookieJar::DELIMITER)
   end
 
   let(:http_only_raw_cookie_string) do
-    raw_cookie_string + Rack::Test::CookieJar::DELIMITER + 'HttpOnly'
+    "#{raw_cookie_string}#{Rack::Test::CookieJar::DELIMITER}HttpOnly"
   end
 
   let(:http_only_secure_raw_cookie_string) do
-    http_only_raw_cookie_string + Rack::Test::CookieJar::DELIMITER + 'secure'
+    "#{http_only_raw_cookie_string}#{Rack::Test::CookieJar::DELIMITER}secure"
   end
 
   let(:value) { 'the cookie value' }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec::Matchers.define :have_body do |expected|
   match do |response|
     expect(response.body).to eq(expected)

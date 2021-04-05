@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Rack
   class MockSession # :nodoc:
     attr_writer :cookie_jar
@@ -31,9 +33,7 @@ module Rack
       @last_response = MockResponse.new(status, headers, body, env['rack.errors'].flush)
 
       # close() gets called automatically in newer Rack versions.
-      if !defined?(Rack::RELEASE) || Gem::Version.new(Rack::RELEASE) < Gem::Version.new('2.2.2')
-        body.close if body.respond_to?(:close)
-      end
+      body.close if (!defined?(Rack::RELEASE) || Gem::Version.new(Rack::RELEASE) < Gem::Version.new('2.2.2')) && body.respond_to?(:close)
 
       cookie_jar.merge(last_response.headers['Set-Cookie'], uri)
 
@@ -50,6 +50,7 @@ module Rack
     # requests have been sent yet.
     def last_request
       raise Rack::Test::Error, 'No request yet. Request a page first.' unless @last_request
+
       @last_request
     end
 
@@ -57,6 +58,7 @@ module Rack
     # no requests have been sent yet.
     def last_response
       raise Rack::Test::Error, 'No response yet. Request a page first.' unless @last_response
+
       @last_response
     end
 

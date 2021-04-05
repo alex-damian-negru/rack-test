@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'simplecov'
 SimpleCov.start do
   add_filter '/spec/'
@@ -9,10 +11,10 @@ require 'bundler/setup'
 require 'rack'
 require 'rspec'
 
-Dir[File.dirname(__FILE__) + '/support/**/*.rb'].each { |f| require f }
+Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].sort.each { |f| require f }
 
 require 'rack/test'
-require File.dirname(__FILE__) + '/fixtures/fake_app'
+require "#{File.dirname(__FILE__)}/fixtures/fake_app"
 
 RSpec.configure do |config|
   config.mock_with :rspec

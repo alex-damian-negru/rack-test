@@ -15,13 +15,13 @@ gem 'rack', '~> 2.0'
 gem 'sinatra', '2.0.4'
 
 group :development, :test do
-  gem 'pry-byebug', '~> 3.9', platform: :mri
-  gem 'rubocop', '~> 1.12.1'
-  gem 'rubocop-rspec', '~> 2.2'
-  gem 'rubocop-rake', '~> 0.5.1'
-  gem 'rubocop-performance', '~> 1.10.2'
-  gem 'reek', '~> 6.0'
-  gem 'guard-rubocop', '~> 1.4'
-  gem 'guard-rspec', '~> 4.7.3', require: false
   gem 'guard-reek', '~> 1.2'
+  gem 'guard-rspec', '~> 4.7.3', require: false
+  gem 'guard-rubocop', '~> 1.4'
+  gem 'pry-byebug', '~> 3.9', platform: :mri
+  gem 'reek', '~> 6.0'
+  gem 'rubocop', '~> 1.12.1'
+  gem 'rubocop-performance', '~> 1.10.2'
+  gem 'rubocop-rake', '~> 0.5.1'
+  gem 'rubocop-rspec', '~> 2.2'
 end
