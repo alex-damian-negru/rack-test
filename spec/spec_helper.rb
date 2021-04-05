@@ -11,6 +11,7 @@ require 'bundler/setup'
 require 'rack'
 require 'rspec'
 require 'rspec/its'
+require 'pry'
 
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].sort.each { |f| require f }
 

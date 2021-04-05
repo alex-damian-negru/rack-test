@@ -754,24 +754,48 @@ describe Rack::Test::Session do
   describe '#delete' do
     it_behaves_like 'any #verb methods', :delete
 
-    it 'uses the provided params hash' do
-      delete '/', foo: 'bar'
-      expect(last_request.GET).to eq({})
-      expect(last_request.POST).to eq('foo' => 'bar')
-      expect(last_request.body.read).to eq('foo=bar')
+    context 'when using the provided params hash' do
+      before { delete '/', foo: 'bar' }
+
+      it 'has an empty GET' do
+        expect(last_request.GET).to eq({})
+      end
+
+      it 'has the provided POST params hash' do
+        expect(last_request.POST).to eq('foo' => 'bar')
+      end
+
+      it 'has an empty body' do
+        expect(last_request.body.read).to eq('foo=bar')
+      end
     end
 
-    it 'accepts params in the path' do
-      delete '/?foo=bar'
-      expect(last_request.GET).to eq('foo' => 'bar')
-      expect(last_request.POST).to eq({})
-      expect(last_request.body.read).to eq('')
+    context 'when accepting params in the path' do
+      before { delete '/?foo=bar' }
+
+      it 'has the the provided params' do
+        expect(last_request.GET).to eq('foo' => 'bar')
+      end
+
+      it 'has an empty POST' do
+        expect(last_request.POST).to eq({})
+      end
+
+      it 'has an empty body' do
+        expect(last_request.body.read).to eq('')
+      end
     end
 
-    it 'accepts a body' do
-      delete '/', 'Lobsterlicious!'
-      expect(last_request.GET).to eq({})
-      expect(last_request.body.read).to eq('Lobsterlicious!')
+    context 'when accepting a body' do
+      before { delete '/', 'Lobsterlicious!' }
+
+      it 'has an empty GET' do
+        expect(last_request.GET).to eq({})
+      end
+
+      it 'has the provided body' do
+        expect(last_request.body.read).to eq('Lobsterlicious!')
+      end
     end
   end
 
@@ -780,11 +804,16 @@ describe Rack::Test::Session do
   end
 
   describe '#custom_request' do
-    it 'requests the URL using the given' do
-      custom_request('link', '/')
+    context 'when requesting the URL using the provided REQUEST_METHOD' do
+      before { custom_request('link', '/') }
 
-      expect(last_request.env['REQUEST_METHOD']).to eq('LINK')
-      expect(last_response).to be_ok
+      it 'has the correct REQUEST_METHOD' do
+        expect(last_request.env['REQUEST_METHOD']).to eq('LINK')
+      end
+
+      it 'is successful' do
+        expect(last_response).to be_ok
+      end
     end
 
     it 'uses the provided env' do
@@ -792,15 +821,16 @@ describe Rack::Test::Session do
       expect(last_request.env['HTTP_USER_AGENT']).to eq('Rack::Test')
     end
 
-    it 'yields the response to a given block' do
-      yielded = false
-
-      custom_request('link', '/') do |response|
-        expect(response).to be_ok
-        yielded = true
+    context 'when yielding the response' do
+      it 'successfully completes the request' do
+        custom_request('link', '/') { |response| expect(response).to be_ok }
       end
 
-      expect(yielded).to be_truthy
+      it 'yields to a given block' do
+        yielded = false
+        custom_request('link', '/') { |_response| yielded = true }
+        expect(yielded).to be_truthy
+      end
     end
 
     it 'sets the HTTP_HOST header with port' do
@@ -813,10 +843,14 @@ describe Rack::Test::Session do
       expect(last_request.env['HTTP_HOST']).to eq('example.org')
     end
 
-    context 'for a XHR' do
+    context 'with an XHR' do
+      before { custom_request('link', '/', {}, xhr: true) }
+
       it 'sends XMLHttpRequest for the X-Requested-With header' do
-        custom_request('link', '/', {}, xhr: true)
         expect(last_request.env['HTTP_X_REQUESTED_WITH']).to eq('XMLHttpRequest')
+      end
+
+      it 'is an XHR' do
         expect(last_request).to be_xhr
       end
     end

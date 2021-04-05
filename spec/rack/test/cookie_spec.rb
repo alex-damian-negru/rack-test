@@ -225,14 +225,21 @@ describe Rack::Test::Session do
       end
     end
 
-    it 'uses :default as the default session name' do
-      get '/cookies/set', 'value' => '1'
-      get '/cookies/show'
-      expect(last_request.cookies).to eq('value' => '1')
-
-      with_session(:default) do
+    context 'with default session' do
+      before do
+        get '/cookies/set', 'value' => '1'
         get '/cookies/show'
+      end
+
+      it 'has the correct cookie value' do
         expect(last_request.cookies).to eq('value' => '1')
+      end
+
+      it 'uses :default as the default session name' do
+        with_session(:default) do
+          get '/cookies/show'
+          expect(last_request.cookies).to eq('value' => '1')
+        end
       end
     end
 

@@ -55,17 +55,18 @@ describe Rack::Test::Session do
       expect(last_request.POST['foo']).to eq('bar? baz')
     end
 
-    it 'sends params encoded as ISO-8859-1' do
-      post '/', 'photo' => uploaded_file, 'foo' => 'bar', 'utf8' => '☃'
-      expect(last_request.POST['foo']).to eq('bar')
+    context 'when sending params encoded as ISO-8859-1' do
+      before { post '/', 'photo' => uploaded_file, 'foo' => 'bar', 'utf8' => '☃' }
 
-      expected_value = if Rack::Test.encoding_aware_strings?
-                         '☃'
-                       else
-                         "\xE2\x98\x83"
-                       end
+      it 'is successful' do
+        expect(last_request.POST['foo']).to eq('bar')
+      end
 
-      expect(last_request.POST['utf8']).to eq(expected_value)
+      it 'is encoding aware' do
+        expected_value = Rack::Test.encoding_aware_strings? ? '☃' : "\xE2\x98\x83"
+
+        expect(last_request.POST['utf8']).to eq(expected_value)
+      end
     end
 
     it 'sends params with parens in names' do

@@ -58,15 +58,12 @@ describe Rack::Test::UploadedFile do
   describe '#initialize' do
     subject { uploaded_file }
 
-    context 'with an IO object' do
+    context 'with an IO object and an original filename' do
       let(:uploaded_file) { described_class.new(stringio, original_filename: original_filename) }
       let(:stringio) { StringIO.new('I am content') }
+      let(:original_filename) { 'content.txt' }
 
-      context 'with an original filename' do
-        let(:original_filename) { 'content.txt' }
-
-        its(:original_filename) { is_expected.to eq original_filename }
-      end
+      its(:original_filename) { is_expected.to eq original_filename }
     end
   end
 end
