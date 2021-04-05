@@ -1,32 +1,72 @@
-# Ref: default config, with minor tweaks
-# https://github.com/bbatsov/rubocop/blob/master/config/default.yml
+require:
+  - rubocop
+  - rubocop-rspec
+  - rubocop-performance
+
 AllCops:
-  Exclude:
-    - "bin/*"
-  Include:
-    - "{lib,spec}/**/*.rb"
-    - "Gemfile"
-    - "Gemfile.rack-1.x"
-    - "rack-test.gemspec"
-    - "Rakefile"
-    - "Thorfile"
-    - "Guardfile"
-  DisplayCopNames: true
-  DisplayStyleGuide: true
-  ExtraDetails: true
+  NewCops: enable
 
-# Rationale: default approach forces us to indent multiline `foo = if bar` statements in an unreasonable way.
-Lint/EndAlignment:
-  EnforcedStyleAlignWith: variable
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
 
-inherit_from: .rubocop_todo.yml
+Layout/LineLength:
+  Max: 160
 
-# Rationale: RSpec blocks are very long and not necessary bad. The gemspec is a configuration
+Lint/DeprecatedOpenSSLConstant:
+  Enabled: true
+
+Lint/MixedRegexpCaptureTypes:
+  Enabled: true
+
+Lint/RaiseException:
+  Enabled: true
+
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+
+Layout/SpaceBeforeBrackets:
+  Enabled: false
+
+Lint/StructNewOverride:
+  Enabled: true
+
 Metrics/BlockLength:
   Exclude:
-    - spec/**/*
-    - rack-test.gemspec
+    - "**/*_spec.rb"
 
-# Rationale: allow Weirich-style blocks, but do not enforce them.
-Style/BlockDelimiters:
+RSpec/ContextWording:
   Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: true
+  EnforcedStyle: always
+
+Style/LambdaCall:
+  Enabled: false
+
+Style/ExponentialNotation:
+  Enabled: true
+
+Style/HashEachMethods:
+  Enabled: false
+
+Style/HashTransformKeys:
+  Enabled: true
+
+Style/HashTransformValues:
+  Enabled: true
+
+Style/RedundantFetchBlock:
+  Enabled: false
+
+Style/RedundantRegexpCharacterClass:
+  Enabled: true
+
+Style/RedundantRegexpEscape:
+  Enabled: true
+
+Style/SlicingWithRange:
+  Enabled: true
