@@ -25,6 +25,4 @@ RSpec.configure do |config|
   def app
     Rack::Lint.new(Rack::Test::FakeApp.new)
   end
-
-  def check(*args); end
 end

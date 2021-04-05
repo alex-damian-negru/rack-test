@@ -562,7 +562,7 @@ describe Rack::Test::Session do
     it 'requests the URL using VERB' do
       public_send(verb, '/')
 
-      check expect(last_request.env['REQUEST_METHOD']).to eq(verb.to_s.upcase)
+      expect(last_request.env['REQUEST_METHOD']).to eq(verb.to_s.upcase)
       expect(last_response).to be_ok
     end
 
@@ -783,7 +783,7 @@ describe Rack::Test::Session do
     it 'requests the URL using the given' do
       custom_request('link', '/')
 
-      check expect(last_request.env['REQUEST_METHOD']).to eq('LINK')
+      expect(last_request.env['REQUEST_METHOD']).to eq('LINK')
       expect(last_response).to be_ok
     end
 

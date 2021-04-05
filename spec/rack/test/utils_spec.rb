@@ -69,8 +69,8 @@ describe Rack::Test::Utils do
       }
       env = Rack::MockRequest.env_for('/', options)
       params = Rack::Multipart.parse_multipart(env)
-      check expect(params['submit-name']).to eq('Larry')
-      check expect(params['files'][:filename]).to eq('foo.txt')
+      expect(params['submit-name']).to eq('Larry')
+      expect(params['files'][:filename]).to eq('foo.txt')
       expect(params['files'][:tempfile].read).to eq("bar\n")
     end
 
@@ -85,12 +85,12 @@ describe Rack::Test::Utils do
       }
       env = Rack::MockRequest.env_for('/', options)
       params = Rack::Multipart.parse_multipart(env)
-      check expect(params['submit-name']).to eq('Larry')
+      expect(params['submit-name']).to eq('Larry')
 
-      check expect(params['files'][0][:filename]).to eq('foo.txt')
+      expect(params['files'][0][:filename]).to eq('foo.txt')
       expect(params['files'][0][:tempfile].read).to eq("bar\n")
 
-      check expect(params['files'][1][:filename]).to eq('bar.txt')
+      expect(params['files'][1][:filename]).to eq('bar.txt')
       expect(params['files'][1][:tempfile].read).to eq("baz\n")
     end
 
@@ -105,10 +105,10 @@ describe Rack::Test::Utils do
       }
       env = Rack::MockRequest.env_for('/', options)
       params = Rack::Multipart.parse_multipart(env)
-      check expect(params['people'][0]['submit-name']).to eq('Larry')
-      check expect(params['people'][0]['files'][:filename]).to eq('foo.txt')
+      expect(params['people'][0]['submit-name']).to eq('Larry')
+      expect(params['people'][0]['files'][:filename]).to eq('foo.txt')
       expect(params['people'][0]['files'][:tempfile].read).to eq("bar\n")
-      check expect(params['foo']).to eq(%w[1 2])
+      expect(params['foo']).to eq(%w[1 2])
     end
 
     it 'builds nested multipart bodies with an array of hashes' do
@@ -122,9 +122,9 @@ describe Rack::Test::Utils do
       }
       env = Rack::MockRequest.env_for('/', options)
       params = Rack::Multipart.parse_multipart(env)
-      check expect(params['files'][:filename]).to eq('foo.txt')
+      expect(params['files'][:filename]).to eq('foo.txt')
       expect(params['files'][:tempfile].read).to eq("bar\n")
-      check expect(params['foo']).to eq([{ 'id' => '1', 'name' => 'Dave' }, { 'id' => '2', 'name' => 'Steve' }])
+      expect(params['foo']).to eq([{ 'id' => '1', 'name' => 'Dave' }, { 'id' => '2', 'name' => 'Steve' }])
     end
 
     it 'builds nested multipart bodies with arbitrarily nested array of hashes' do
@@ -141,9 +141,9 @@ describe Rack::Test::Utils do
       }
       env = Rack::MockRequest.env_for('/', options)
       params = Rack::Multipart.parse_multipart(env)
-      check expect(params['files'][:filename]).to eq('foo.txt')
+      expect(params['files'][:filename]).to eq('foo.txt')
       expect(params['files'][:tempfile].read).to eq("bar\n")
-      check expect(params['foo']).to eq('bar' => [{ 'id' => '1', 'name' => 'Dave' },
+      expect(params['foo']).to eq('bar' => [{ 'id' => '1', 'name' => 'Dave' },
                                                   { 'id' => '2', 'name' => 'Steve', 'qux' => [{ 'id' => '3', 'name' => 'mike' },
                                                                                               { 'id' => '4', 'name' => 'Joan' }] }])
     end
@@ -159,10 +159,10 @@ describe Rack::Test::Utils do
       }
       env = Rack::MockRequest.env_for('/', options)
       params = Rack::Multipart.parse_multipart(env)
-      check expect(params['files'][0][:filename]).to eq('foo.txt')
+      expect(params['files'][0][:filename]).to eq('foo.txt')
       expect(params['files'][0][:tempfile].read).to eq("bar\n")
-      check expect(params['foo'][0]).to eq('1')
-      check expect(params['bar'][0]).to eq('qux' => '2')
+      expect(params['foo'][0]).to eq('1')
+      expect(params['bar'][0]).to eq('qux' => '2')
     end
 
     it 'allows for nested files' do
@@ -177,10 +177,11 @@ describe Rack::Test::Utils do
       }
       env = Rack::MockRequest.env_for('/', options)
       params = Rack::Multipart.parse_multipart(env)
-      check expect(params['foo'][0]['id']).to eq('1')
-      check expect(params['foo'][0]['data'][:filename]).to eq('foo.txt')
+
+      expect(params['foo'][0]['id']).to eq('1')
+      expect(params['foo'][0]['data'][:filename]).to eq('foo.txt')
       expect(params['foo'][0]['data'][:tempfile].read).to eq("bar\n")
-      check expect(params['foo'][1]).to eq('id' => '2', 'data' => %w[3 4])
+      expect(params['foo'][1]).to eq('id' => '2', 'data' => %w[3 4])
     end
 
     it 'returns nil if no UploadedFiles were used' do

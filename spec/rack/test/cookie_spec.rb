@@ -6,7 +6,7 @@ describe Rack::Test::Session do
   context 'cookies' do
     it 'keeps a cookie jar' do
       get '/cookies/show'
-      check expect(last_request.cookies).to eq({})
+      expect(last_request.cookies).to eq({})
 
       get '/cookies/set', 'value' => '1'
       get '/cookies/show'
@@ -24,9 +24,9 @@ describe Rack::Test::Session do
     it 'cookie path defaults to the uri of the document that was requested' do
       post '/cookies/default-path/', 'value' => 'cookie'
       get '/cookies/default-path/'
-      check last_request.cookies.should == { 'simple' => 'cookie' }
+      last_request.cookies.should == { 'simple' => 'cookie' }
       get '/cookies/show'
-      check last_request.cookies.should == {}
+      last_request.cookies.should == {}
     end
 
     it 'uses the single "path" when only one path is defined' do
@@ -111,7 +111,7 @@ describe Rack::Test::Session do
       get 'http://sub.example.com/cookies/set', 'value' => 'sub'
 
       get 'http://sub.example.com/cookies/show'
-      check expect(last_request.cookies).to eq('value' => 'sub')
+      expect(last_request.cookies).to eq('value' => 'sub')
 
       get 'http://example.com/cookies/show'
       expect(last_request.cookies).to eq('value' => 'domain')
@@ -127,7 +127,7 @@ describe Rack::Test::Session do
     it 'defaults the domain to the request domain' do
       get 'http://example.com/cookies/set-simple', 'value' => 'cookie'
       get 'http://example.com/cookies/show'
-      check expect(last_request.cookies).to eq('simple' => 'cookie')
+      expect(last_request.cookies).to eq('simple' => 'cookie')
 
       get 'http://other.example/cookies/show'
       expect(last_request.cookies).to eq({})
@@ -142,7 +142,7 @@ describe Rack::Test::Session do
     it 'supports secure cookies' do
       get 'https://example.com/cookies/set-secure', 'value' => 'set'
       get 'http://example.com/cookies/show'
-      check expect(last_request.cookies).to eq({})
+      expect(last_request.cookies).to eq({})
 
       get 'https://example.com/cookies/show'
       expect(last_request.cookies).to eq('secure-cookie' => 'set')
@@ -152,7 +152,7 @@ describe Rack::Test::Session do
     it 'supports secure cookies when enabling SSL via env' do
       get '//example.com/cookies/set-secure', { 'value' => 'set' }, 'HTTPS' => 'on'
       get '//example.com/cookies/show', nil, 'HTTPS' => 'off'
-      check expect(last_request.cookies).to eq({})
+      expect(last_request.cookies).to eq({})
 
       get '//example.com/cookies/show', nil, 'HTTPS' => 'on'
       expect(last_request.cookies).to eq('secure-cookie' => 'set')
@@ -162,11 +162,11 @@ describe Rack::Test::Session do
     it 'keeps separate cookie jars for different domains' do
       get 'http://example.com/cookies/set', 'value' => 'example'
       get 'http://example.com/cookies/show'
-      check expect(last_request.cookies).to eq('value' => 'example')
+      expect(last_request.cookies).to eq('value' => 'example')
 
       get 'http://other.example/cookies/set', 'value' => 'other'
       get 'http://other.example/cookies/show'
-      check expect(last_request.cookies).to eq('value' => 'other')
+      expect(last_request.cookies).to eq('value' => 'other')
 
       get 'http://example.com/cookies/show'
       expect(last_request.cookies).to eq('value' => 'example')
@@ -228,7 +228,7 @@ describe Rack::Test::Session do
     it 'uses :default as the default session name' do
       get '/cookies/set', 'value' => '1'
       get '/cookies/show'
-      check expect(last_request.cookies).to eq('value' => '1')
+      expect(last_request.cookies).to eq('value' => '1')
 
       with_session(:default) do
         get '/cookies/show'
