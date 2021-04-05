@@ -19,26 +19,12 @@ describe Rack::Test::Session do
       expect(last_request.cookies).to eq({})
     end
 
-    it 'cookie path defaults to the uri of the document that was requested' do
-      skip 'See issue rack-test github issue #50'
-      post '/cookies/default-path', 'value' => 'cookie'
-      get '/cookies/default-path'
-      expect(last_request.cookies).to eq('simple' => 'cookie')
-      get '/cookies/show'
-      expect(last_request.cookies).to eq({})
-    end
-
-    it 'uses the first "path" when multiple paths are defined' do
-      cookie_string = [
-        '/',
-        'csrf_id=ABC123',
-        'path=/, _github_ses=ABC123',
-        'path=/',
-        'expires=Wed, 01 Jan 2020 08:00:00 GMT',
-        'HttpOnly'
-      ].join(Rack::Test::CookieJar::DELIMITER)
-      cookie = Rack::Test::Cookie.new(cookie_string)
-      expect(cookie.path).to eq('/')
+    it "cookie path defaults to the uri of the document that was requested" do
+      post "/cookies/default-path/", "value" => "cookie"
+      get "/cookies/default-path/"
+      check last_request.cookies.should == { "simple"=>"cookie" }
+      get "/cookies/show"
+      check last_request.cookies.should == { }
     end
 
     it 'uses the single "path" when only one path is defined' do
