@@ -16,7 +16,6 @@ gem 'sinatra', '2.0.4'
 
 group :development, :test do
   gem 'guard-reek', '~> 1.2'
-  gem 'guard-rspec', '~> 4.7.3', require: false
   gem 'guard-rubocop', '~> 1.4'
   gem 'pry-byebug', '~> 3.9', platform: :mri
   gem 'reek', '~> 6.0'
@@ -24,4 +23,10 @@ group :development, :test do
   gem 'rubocop-performance', '~> 1.10.2'
   gem 'rubocop-rake', '~> 0.5.1'
   gem 'rubocop-rspec', '~> 2.2'
+end
+
+group :test do
+  gem 'rspec', '~> 3.10'
+  gem 'rspec-its', '~> 1.3'
+  gem 'guard-rspec', '~> 4.7.3', require: false
 end
