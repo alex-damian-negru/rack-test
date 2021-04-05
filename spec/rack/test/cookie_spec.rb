@@ -19,12 +19,12 @@ describe Rack::Test::Session do
       expect(last_request.cookies).to eq({})
     end
 
-    it "cookie path defaults to the uri of the document that was requested" do
-      post "/cookies/default-path/", "value" => "cookie"
-      get "/cookies/default-path/"
-      check last_request.cookies.should == { "simple"=>"cookie" }
-      get "/cookies/show"
-      check last_request.cookies.should == { }
+    it 'cookie path defaults to the uri of the document that was requested' do
+      post '/cookies/default-path/', 'value' => 'cookie'
+      get '/cookies/default-path/'
+      check last_request.cookies.should == { 'simple' => 'cookie' }
+      get '/cookies/show'
+      check last_request.cookies.should == {}
     end
 
     it 'uses the single "path" when only one path is defined' do
@@ -85,11 +85,11 @@ describe Rack::Test::Session do
       expect(last_request.cookies).to eq({})
     end
 
-    it "respects cookie domains when no domain is explicitly set" do
-      request("http://example.org/cookies/count").should     have_body("1")
-      request("http://www.example.org/cookies/count").should have_body("1")
-      request("http://example.org/cookies/count").should     have_body("2")
-      request("http://www.example.org/cookies/count").should have_body("2")
+    it 'respects cookie domains when no domain is explicitly set' do
+      request('http://example.org/cookies/count').should     have_body('1')
+      request('http://www.example.org/cookies/count').should have_body('1')
+      request('http://example.org/cookies/count').should     have_body('2')
+      request('http://www.example.org/cookies/count').should have_body('2')
     end
 
     it 'treats domains case insensitively' do
