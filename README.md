@@ -129,7 +129,7 @@ gem 'rack-test', github: 'rack-test', branch: 'master'
 - Much of the original code was extracted from Merb 1.0's request helper
 
 ## License
-`rack-test` is released under the [MIT License](MIT-LICENSE.txt).
+`rack-test` is released under the [MIT License](LICENSE.txt).
 
 ## Contribution
 

@@ -1,7 +1,6 @@
 pkg
 doc
 coverage
-/Gemfile*.lock
 VERSION
 *.rbc
 *.swp
