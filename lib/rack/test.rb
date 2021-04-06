@@ -56,15 +56,15 @@ module Rack
       #
       # Example:
       #   get "/"
-      def get(uri, params = {}, env = {}, &block)
-        custom_request('GET', uri, params, env, &block)
+      def get(uri, params = nil, env = nil, &block)
+        custom_request('GET', uri, params || {}, env || {}, &block)
       end
 
       # Issue a POST request for the given URI. See #get
       #
       # Example:
       #   post "/signup", "name" => "Bryan"
-      def post(uri, params = {}, env = {}, &block)
+      def post(uri, params = nil, env = nil, &block)
         custom_request('POST', uri, params, env, &block)
       end
 
@@ -72,7 +72,7 @@ module Rack
       #
       # Example:
       #   put "/"
-      def put(uri, params = {}, env = {}, &block)
+      def put(uri, params = nil, env = nil, &block)
         custom_request('PUT', uri, params, env, &block)
       end
 
@@ -80,7 +80,7 @@ module Rack
       #
       # Example:
       #   patch "/"
-      def patch(uri, params = {}, env = {}, &block)
+      def patch(uri, params = nil, env = nil, &block)
         custom_request('PATCH', uri, params, env, &block)
       end
 
@@ -88,7 +88,7 @@ module Rack
       #
       # Example:
       #   delete "/"
-      def delete(uri, params = {}, env = {}, &block)
+      def delete(uri, params = nil, env = nil, &block)
         custom_request('DELETE', uri, params, env, &block)
       end
 
@@ -96,7 +96,7 @@ module Rack
       #
       # Example:
       #   options "/"
-      def options(uri, params = {}, env = {}, &block)
+      def options(uri, params = nil, env = nil, &block)
         custom_request('OPTIONS', uri, params, env, &block)
       end
 
@@ -104,7 +104,7 @@ module Rack
       #
       # Example:
       #   head "/"
-      def head(uri, params = {}, env = {}, &block)
+      def head(uri, params = nil, env = nil, &block)
         custom_request('HEAD', uri, params, env, &block)
       end
 
@@ -125,7 +125,10 @@ module Rack
       #
       # Example:
       #   custom_request "LINK", "/"
-      def custom_request(verb, uri, params = {}, env = {}, &block)
+      def custom_request(verb, uri, params = nil, env = nil, &block)
+        params ||= {}
+        env ||= {}
+
         uri = parse_uri(uri, env)
         env = env_for(uri, env.merge(method: verb.to_s.upcase, params: params))
         process_request(uri, env, &block)
