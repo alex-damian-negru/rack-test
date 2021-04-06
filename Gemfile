@@ -1,18 +1,13 @@
 # frozen_string_literal: true
 
-ruby '2.7.2'
+ruby '3.0.0'
 source 'https://rubygems.org'
 
 gemspec
 
 # Runtime dependency
 gem 'rack', '~> 2.0'
-
-# Pin Sinatra version temporarily,
-# because Sinatra 2.0.5 has below issue that prevents our unit tests to pass.
-# It will be fixed on the next release.
-# https://github.com/sinatra/sinatra/commit/d8c1839
-gem 'sinatra', '2.0.4'
+gem 'sinatra', git: 'https://github.com/andrewtblake/sinatra.git', branch: 'master'
 
 group :development, :test do
   gem 'guard-reek', '~> 1.2'
